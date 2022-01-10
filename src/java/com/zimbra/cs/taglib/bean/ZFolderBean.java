@@ -1,19 +1,8 @@
-/*
- * ***** BEGIN LICENSE BLOCK *****
- * Zimbra Collaboration Suite Server
- * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016 Synacor, Inc.
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software Foundation,
- * version 2 of the License.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <https://www.gnu.org/licenses/>.
- * ***** END LICENSE BLOCK *****
- */
+// SPDX-FileCopyrightText: 2022 Synacor, Inc.
+// SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
+//
+// SPDX-License-Identifier: GPL-2.0-only
+
 package com.zimbra.cs.taglib.bean;
 
 import com.zimbra.common.soap.VoiceConstants;
@@ -26,8 +15,11 @@ import com.zimbra.client.ZGrant;
 import com.zimbra.client.ZMailbox;
 import com.zimbra.client.ZMountpoint;
 import com.zimbra.client.ZSearchFolder;
+import com.zimbra.common.util.ZimbraLog;
 
 import java.util.List;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 public class  ZFolderBean {
 
@@ -62,7 +54,13 @@ public class  ZFolderBean {
      *  <code>"/Inbox"</code>, etc.
      * @return path
      */
-    public String getPath() { return mFolder.getPath(); }
+    public String getPath() {
+        try {
+            return URLDecoder.decode(mFolder.getPathURLEncoded(), "utf-8"); 
+        } catch (UnsupportedEncodingException e) {
+            return mFolder.getPath();
+        }
+    }
 
 
 	public String getPathURLEncoded() { return mFolder.getPathURLEncoded(); }

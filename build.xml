@@ -44,9 +44,9 @@
     -->
 
     <target name="jar" depends="compile, copy-build-dependencies" description="Creates the jar file">
-        <antcall target="zimbra-jar">
+        <antcall target="zextras-jar">
             <param name="implementation.title" value="Zimbra Taglib"/>
-            <!-- Overriding the base directory path used in ant-global.xml's zimbra-jar target -->
+            <!-- Overriding the base directory path used in ant-global.xml's zextras-jar target -->
             <param name="jar.build.dir" value="." />
             <param name="includes" value="com/**, META-INF/**, *.properties" />
         </antcall>

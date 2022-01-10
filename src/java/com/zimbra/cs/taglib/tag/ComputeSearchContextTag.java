@@ -1,19 +1,8 @@
-/*
- * ***** BEGIN LICENSE BLOCK *****
- * Zimbra Collaboration Suite Server
- * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2016 Synacor, Inc.
- *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software Foundation,
- * version 2 of the License.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License along with this program.
- * If not, see <https://www.gnu.org/licenses/>.
- * ***** END LICENSE BLOCK *****
- */
+// SPDX-FileCopyrightText: 2022 Synacor, Inc.
+// SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
+//
+// SPDX-License-Identifier: GPL-2.0-only
+
 package com.zimbra.cs.taglib.tag;
 
 import com.zimbra.common.service.ServiceException;
@@ -28,6 +17,7 @@ import com.zimbra.client.ZSearchFolder;
 import com.zimbra.client.ZSearchParams;
 import com.zimbra.client.ZTag;
 import com.zimbra.client.ZPhoneAccount;
+import com.zimbra.common.util.ZimbraLog;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
@@ -37,6 +27,9 @@ import com.zimbra.cs.taglib.tag.i18n.I18nUtil;
 import com.zimbra.soap.type.SearchSortBy;
 import java.io.IOException;
 import java.util.List;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
+
 
 public class ComputeSearchContextTag extends ZimbraSimpleTag {
 
@@ -249,7 +242,14 @@ public class ComputeSearchContextTag extends ZimbraSimpleTag {
                     String name = I18nUtil.getLocalizedMessage(pageContext, "FOLDER_LABEL_"+folder.getId());
                     name = (name == null || name.startsWith("???")) ? folder.getName() : name;
 
-                    result.setQuery("in:\"" + folder.getRootRelativePath() + "\"");
+                    String search_value = "";
+                    try {
+                        search_value=URLDecoder.decode(folder.getPathURLEncoded(), "utf-8"); 
+                    } catch (UnsupportedEncodingException e) {
+                        search_value = folder.getRootRelativePath();
+                    }
+
+                    result.setQuery("in:\"" + search_value + "\"");
                     result.setBackTo(I18nUtil.getLocalizedMessage(pageContext, "backToFolder", new Object[] {name}));
                     result.setShortBackTo(name);
                 }

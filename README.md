@@ -1,21 +1,25 @@
-Steps to build
---------------
+# Carbonio Taglib
 
-1. Clone the repo
+![Contributors](https://img.shields.io/github/contributors/zextras/carbonio-taglib "Contributors")
+![Activity](https://img.shields.io/github/commit-activity/m/zextras/carbonio-taglib "Activity") ![License](https://img.shields.io/badge/license-AGPL%203-green
+"License")
+![Project](https://img.shields.io/badge/project-carbonio-informational
+"Project")
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/zextras.svg?style=social&label=Follow%20%40zextras)](https://twitter.com/zextras)
 
-  `git clone ssh://git@stash.corp.synacor.com:7999/zimbra/zm-taglib.git`
-
-2. Run the command
-
-    `ant clean publish-local`
- 
 ## Dependencies
-- `zm-store`
-- `zm-soap`
-- `zm-client`
-- `zm-common`
+
+- `carbonio-store`
+- `carbonio-soap`
+- `carbonio-client`
+- `carbonio-common`
 - `ThirdParty Jars`
 
 ## Artifacts
-- `zm-taglib.jar`
+
+- `carbonio-taglib.jar`
 - Class files for `/src`
+
+## License
+
+See [COPYING](COPYING) file for details
