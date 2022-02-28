@@ -1,39 +1,54 @@
 <project name="zm-taglib" default="jar">
 
-    <import file="../zm-zcs/ant-global.xml" />
+    <import file="./build-common.xml" />
 
-    <property environment="env"/>
-    <property name="root.dir" location=""/>
+    <property environment="env" />
+    <property name="root.dir" location="" />
     <property name="jarfile" location="${build.dir}/zimbrataglib.jar" />
+
+    <!-- Targets -->
+    <target name="publish-local-all" depends="init-ivy-cache">
+        <ant dir="./" target="publish-local" inheritAll="true" />
+        <echo>Publishing jar in local cache</echo>
+    </target>
+
+    <target name="publish-maven-all" depends="publish-local-all">
+        <ant dir="./" target="publish-maven" inheritAll="true" />
+        <echo>Publish artifacts on public maven</echo>
+    </target>
+
+    <target name="init-ivy-cache">
+        <mkdir dir="${user.home}/.ivy2/cache" />
+    </target>
 
     <target name="docs" depends="jar" description="build tld docs in build/docs directory">
         <java fork="true" jar="jars/tlddoc.jar" failonerror="true">
-            <arg line="-d ${build.dir}/docs"/>
-            <arg value="${jarfile}"/>
+            <arg line="-d ${build.dir}/docs" />
+            <arg value="${jarfile}" />
         </java>
     </target>
 
     <target name="clean" description="Removes any built/temporary files">
-        <delete dir="${build.dir}"/>
+        <delete dir="${build.dir}" />
     </target>
 
     <target name="copy-build-dependencies" description="Temporarily copies com folder from build/classes and resources/*.properties to root directory">
         <copy todir="${root.dir}">
             <fileset dir="${root.dir}/resources/">
-                <include name="*.properties"/>
+                <include name="*.properties" />
             </fileset>
         </copy>
         <copy todir="${root.dir}/com">
-            <fileset dir="${build.dir}/classes/com"/>
+            <fileset dir="${build.dir}/classes/com" />
         </copy>
     </target>
 
     <target name="delete-duplicate-dependencies" description="Deletes the temporarily copied ZimbraTL.properties file from root directory">
         <delete>
-            <fileset dir="${root.dir}/" includes="*.properties"/>
+            <fileset dir="${root.dir}/" includes="*.properties" />
         </delete>
         <delete includeEmptyDirs="true">
-            <fileset dir="${root.dir}/" includes="com/"/>
+            <fileset dir="${root.dir}/" includes="com/" />
         </delete>
     </target>
 
@@ -45,7 +60,7 @@
 
     <target name="jar" depends="compile, copy-build-dependencies" description="Creates the jar file">
         <antcall target="zextras-jar">
-            <param name="implementation.title" value="Zimbra Taglib"/>
+            <param name="implementation.title" value="Zimbra Taglib" />
             <!-- Overriding the base directory path used in ant-global.xml's zextras-jar target -->
             <param name="jar.build.dir" value="." />
             <param name="includes" value="com/**, META-INF/**, *.properties" />
